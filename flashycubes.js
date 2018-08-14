@@ -20,7 +20,7 @@ var flashycubes = {};
   var FADE_TIME = 5;
   var VOLUME_FADE_TIME = 0.1;
   var INITIAL_VOLUME = 0.5;
-  var VOLUME_TICK = 0.1;
+  var VOLUME_TICK = 0.05;
   var NOAUDIO_AMPLITUDE = 0.05;
   var NOAUDIO_LOW = 0.6;
   var NOAUDIO_MID = 0.1;
@@ -548,4 +548,5 @@ var flashycubes = {};
       return iOSCtx;
     };
   }
+
 })();
