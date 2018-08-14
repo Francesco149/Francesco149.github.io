@@ -15,7 +15,7 @@ var flashycubes = {};
   var HIGH_THRESHOLD = 0.5;
   var AMPLITUDE_SAMPLES = 1024;
   var N_STARS = 727;
-  var PARALLAX_AMOUNT = 0.2;
+  var PARALLAX_AMOUNT = 0.4;
   var MUSIC_FILE = 'To_the_Next_Destination.ogg';
   var MUSIC_OFFSET = 25;
   var FADE_TIME = 5;
@@ -216,7 +216,7 @@ var flashycubes = {};
     stars.forEach(
       function(star) {
         var size = 0.025 / star[2];
-        var pos = star.divideScalar(star[2]).subtract(parallax);
+        var pos = star.add(parallax).divideScalar(star[2]);
         fillRect(pos[0] - size / 2, pos[1] - size / 2, size, size);
       }
     );
