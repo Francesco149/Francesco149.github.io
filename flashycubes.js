@@ -211,7 +211,7 @@ var flashycubes = {};
   function drawCube() {
     gfx.lineWidth = lineWidth;
     gfx.strokeStyle = rgba(low * 255, mid * 128, high * 128,
-      1 + amplitude - 0.5);
+      0.8 + amplitude);
     strokeCube(0, 0, 4, 1 + amplitude, rotation, rotation * 0.75);
   }
 
