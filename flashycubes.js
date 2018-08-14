@@ -15,6 +15,7 @@ var flashycubes = {};
   var HIGH_THRESHOLD = 0.5;
   var AMPLITUDE_SAMPLES = 1024;
   var N_STARS = 727;
+  var PARALLAX_AMOUNT = 0.2;
   var MUSIC_FILE = 'To_the_Next_Destination.ogg';
   var MUSIC_OFFSET = 25;
   var FADE_TIME = 5;
@@ -47,6 +48,7 @@ var flashycubes = {};
   var high = 0;
   var stars = [];
   var rotation = 0;
+  var parallax = [0, 0];
   var lineWidth = 2;
 
   function initGraphics(canvas) {
@@ -54,6 +56,7 @@ var flashycubes = {};
     resize();
     window.addEventListener('resize', resize, false);
     window.addEventListener('wheel', wheel, false);
+    window.addEventListener('mousemove', mousemove, false);
     window.requestAnimationFrame(tick);
   }
 
@@ -132,6 +135,17 @@ var flashycubes = {};
     setVolume(getVolume() - delta);
   }
 
+  function mousemove(ev) {
+    if (ev.clientX == null) {
+      return;
+    }
+
+    parallax = [ev.clientX / gfx.canvas.width,
+      ev.clientY / gfx.canvas.height]
+        .clamp(0, 1)
+        .multiplyScalar(PARALLAX_AMOUNT);
+  }
+
   function updateAmplitude() {
     analyser.getByteTimeDomainData(soundBuffer);
     amplitude = soundBuffer.averageAmplitude(0, analyser.fftSize);
@@ -202,7 +216,7 @@ var flashycubes = {};
     stars.forEach(
       function(star) {
         var size = 0.025 / star[2];
-        var pos = star.divideScalar(star[2]);
+        var pos = star.divideScalar(star[2]).subtract(parallax);
         fillRect(pos[0] - size / 2, pos[1] - size / 2, size, size);
       }
     );
@@ -212,7 +226,8 @@ var flashycubes = {};
     gfx.lineWidth = lineWidth;
     gfx.strokeStyle = rgba(low * 255, mid * 128, high * 128,
       0.8 + amplitude);
-    strokeCube(0, 0, 4, 1 + amplitude, rotation, rotation * 0.75);
+    strokeCube(parallax[0], parallax[1], 4, 1 + amplitude,
+      rotation, rotation * 0.75);
   }
 
   function draw() {

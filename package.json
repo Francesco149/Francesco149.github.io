@@ -1,6 +1,6 @@
 {
   "name": "flashycubes",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "music visualizer using webaudio api and some manual 3D rendering on a 2D canvas",
   "main": "index.html",
   "scripts": {
