@@ -300,11 +300,26 @@ var flashycubes = {};
   }
 
   function rgb(r, g, b) {
-    return 'rgb(' + [r, g, b].floor().join(',') + ')';
+    return (
+      'rgb(' +
+      [r, g, b]
+        .floor()
+        .clamp(0, 255)
+        .join(',') +
+      ')'
+    );
   }
 
   function rgba(r, g, b, a) {
-    return 'rgba(' + [r, g, b].floor().join(',') + ',' + a + ')';
+    a = Math.max(0, Math.min(a, 1));
+    return (
+      'rgba(' +
+      [r, g, b]
+        .floor()
+        .clamp(0, 255)
+        .join(',') +
+      ',' + a + ')'
+    );
   }
 
   function pixels(coord) {
@@ -432,6 +447,13 @@ var flashycubes = {};
 
   Array.prototype.floor = function() {
     return this.map(function(x) { return Math.floor(x); });
+  };
+
+  Array.prototype.clamp = function(min, max) {
+    return this.map(
+      function(x) {
+        return Math.max(min, Math.min(x, max));
+      });
   };
 
   if ('Uint8Array' in window) {
