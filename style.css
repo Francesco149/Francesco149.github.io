@@ -1,0 +1,52 @@
+/*
+ * this is free and unencumbered software released into the public domain
+ * refer to the attached UNLICENSE or http://unlicense.org/
+ */
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+html, body, ul, li {
+  color: #aaa;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+    monospace, Courier;
+  font-size: calc(0.9em + 0.15vw);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.contents {
+  color: white;
+  left: 0;
+  padding: calc(0.5em + 0.5vw);
+  position: absolute;
+  top: 0;
+  z-index: 5;
+}
+
+ul {
+  font-weight: 600;
+  list-style-type: none;
+}
+
+li { padding: calc(0.1em + 0.1vw) calc(0.1em + 0.1vw); }
+
+li a {
+  color: #aaa;
+  display: block;
+  text-decoration: none;
+}
+
+.uncommented { color: #fff; }
+li a:hover { color: #fff; }
+li a span { display: inline; }
+li a:hover span { display: none; }
+

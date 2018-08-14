@@ -1,0 +1,30 @@
+{
+  "name": "flashycubes",
+  "version": "1.0.0",
+  "description": "music visualizer using webaudio api and some manual 3D rendering on a 2D canvas",
+  "main": "index.html",
+  "scripts": {
+    "lint": "eslint flashycubes.js && htmllint index.html && csslint style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Francesco149/flashycubes.git"
+  },
+  "author": "Franc[e]sco <lolisamurai@tfwno.gf> (https://github.com/Francesco149)",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/Francesco149/flashycubes/issues"
+  },
+  "homepage": "https://github.com/Francesco149/flashycubes#readme",
+  "files": [
+    "flashycubes.js",
+    "To_The_Next_Destination.ogg",
+    "UNLICENSE"
+  ],
+  "devDependencies": {
+    "csslint": "^1.0.5",
+    "eslint": "^5.3.0",
+    "htmllint": "^0.7.2",
+    "htmllint-cli": "0.0.7"
+  }
+}
