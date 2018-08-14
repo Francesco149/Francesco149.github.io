@@ -17,6 +17,7 @@ var flashycubes = {};
   var N_STARS = 727;
   var MUSIC_FILE = 'To_the_Next_Destination.ogg';
   var MUSIC_OFFSET = 25;
+  var FADE_TIME = 5;
   var NOAUDIO_AMPLITUDE = 0.05;
   var NOAUDIO_LOW = 0.6;
   var NOAUDIO_MID = 0.1;
@@ -28,6 +29,7 @@ var flashycubes = {};
 
   var audio;
   var analyser;
+  var gainNode;
   var soundBuffer;
   var frequencyBuffer;
 
@@ -66,9 +68,11 @@ var flashycubes = {};
     }
 
     audio = new AudioContext();
+    gainNode = audio.createGain();
+    gainNode.connect(audio.destination);
     analyser = audio.createAnalyser();
     analyser.fftSize = AMPLITUDE_SAMPLES;
-    analyser.connect(audio.destination);
+    analyser.connect(gainNode);
 
     var Uint8Array = window.Uint8Array;
     soundBuffer = new Uint8Array(analyser.fftSize);
@@ -214,11 +218,16 @@ var flashycubes = {};
   }
 
   function playSound(buffer, when, offset) {
+    var gain = gainNode.gain;
+    gain.linearRampToValueAtTime(0, audio.currentTime);
+    gain.linearRampToValueAtTime(1, audio.currentTime + FADE_TIME);
+
     var source = audio.createBufferSource();
     source.buffer = buffer;
     source.connect(analyser);
     source.loop = true;
     source.start(when, offset);
+
     return source;
   }
 
@@ -423,6 +432,10 @@ var flashycubes = {};
       returnNode.start = returnNode.start || returnNode.noteOn;
       return returnNode;
     };
+  }
+
+  if (isOld(ctxProto.createGain, ctxProto.createGainNode)) {
+    ctxProto.createGain = ctxProto.createGainNode;
   }
 
   if (navigator.userAgent.indexOf('like Mac OS X') !== -1) {
