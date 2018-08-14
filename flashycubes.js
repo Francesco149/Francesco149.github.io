@@ -18,6 +18,9 @@ var flashycubes = {};
   var MUSIC_FILE = 'To_the_Next_Destination.ogg';
   var MUSIC_OFFSET = 25;
   var FADE_TIME = 5;
+  var VOLUME_FADE_TIME = 0.1;
+  var INITIAL_VOLUME = 0.5;
+  var VOLUME_TICK = 0.1;
   var NOAUDIO_AMPLITUDE = 0.05;
   var NOAUDIO_LOW = 0.6;
   var NOAUDIO_MID = 0.1;
@@ -30,8 +33,11 @@ var flashycubes = {};
   var audio;
   var analyser;
   var gainNode;
+  var initialGainNode;
   var soundBuffer;
   var frequencyBuffer;
+  var volumeDisplay;
+  var curVolume;
 
   var lastFrameTime = Date.now();
   var deltaTime = 0;
@@ -47,6 +53,7 @@ var flashycubes = {};
     gfx = canvas.getContext('2d');
     resize();
     window.addEventListener('resize', resize, false);
+    window.addEventListener('wheel', wheel, false);
     window.requestAnimationFrame(tick);
   }
 
@@ -58,7 +65,21 @@ var flashycubes = {};
     );
   }
 
-  function initAudio() {
+  function getPreviousVolume() {
+    if (typeof(Storage) !== 'undefined') {
+      var previousVolumeStr = localStorage.getItem('volumeLevel');
+      if (previousVolumeStr) {
+        var previousVolume = parseFloat(previousVolumeStr);
+        return isNaN(previousVolume) ? INITIAL_VOLUME : previousVolume;
+      }
+    }
+
+    return INITIAL_VOLUME;
+  }
+
+  function initAudio(volume) {
+    volumeDisplay = volume;
+
     if (!hasAudio()) {
       amplitude = NOAUDIO_AMPLITUDE;
       low = NOAUDIO_LOW;
@@ -70,9 +91,12 @@ var flashycubes = {};
     audio = new AudioContext();
     gainNode = audio.createGain();
     gainNode.connect(audio.destination);
+    initialGainNode = audio.createGain();
+    initialGainNode.connect(gainNode);
     analyser = audio.createAnalyser();
     analyser.fftSize = AMPLITUDE_SAMPLES;
-    analyser.connect(gainNode);
+    analyser.connect(initialGainNode);
+    setVolume(getPreviousVolume());
 
     var Uint8Array = window.Uint8Array;
     soundBuffer = new Uint8Array(analyser.fftSize);
@@ -89,9 +113,9 @@ var flashycubes = {};
     }
   }
 
-  function init(canvas) {
+  function init(canvas, volume) {
     initGraphics(canvas);
-    initAudio();
+    initAudio(volume);
     initStars();
   }
 
@@ -101,6 +125,11 @@ var flashycubes = {};
     size = [gfx.canvas.width, gfx.canvas.height];
     aspect = gfx.canvas.height / gfx.canvas.width;
     lineWidth = Math.floor(Math.max(1, size[0] * 0.002));
+  }
+
+  function wheel(ev) {
+    var delta = VOLUME_TICK * Math.sign(ev.deltaY);
+    setVolume(getVolume() - delta);
   }
 
   function updateAmplitude() {
@@ -217,10 +246,42 @@ var flashycubes = {};
     request.send();
   }
 
-  function playSound(buffer, when, offset) {
+  function getVolume() {
+    if (typeof(curVolume) === 'undefined') {
+      return INITIAL_VOLUME;
+    }
+    return curVolume;
+  }
+
+  function setVolume(volume) {
+    if (!audio) {
+      return;
+    }
+
+    volume = Math.max(0, Math.min(1, volume));
+
     var gain = gainNode.gain;
-    gain.linearRampToValueAtTime(0, audio.currentTime);
-    gain.linearRampToValueAtTime(1, audio.currentTime + FADE_TIME);
+    var cur = audio.currentTime;
+    gain.linearRampToValueAtTime(getVolume(), cur);
+    gain.linearRampToValueAtTime(volume, cur + VOLUME_FADE_TIME);
+
+    if (typeof(Storage) !== 'undefined') {
+      localStorage.setItem('volumeLevel', volume.toString());
+    }
+
+    curVolume = volume;
+    updateVolume();
+  }
+
+  function updateVolume() {
+    volumeDisplay.innerHTML = getVolume().toFixed(2).toString();
+  }
+
+  function playSound(buffer, when, offset) {
+    var gain = initialGainNode.gain;
+    var cur = audio.currentTime;
+    gain.linearRampToValueAtTime(0, cur);
+    gain.linearRampToValueAtTime(getVolume(), cur + FADE_TIME);
 
     var source = audio.createBufferSource();
     source.buffer = buffer;

@@ -7,10 +7,14 @@
 <head>
   <meta charset="utf-8" />
   <title>flashycubes</title>
-  <link rel="stylesheet" href="style.css?v=1.0.0" />
+  <link rel="stylesheet" href="style.css?v=1.0.1" />
   <script type="text/javascript" src="flashycubes.js?v=1.0.1"></script>
 </head>
-<body onload="flashycubes.init(document.getElementById('screen'));">
+<body onload="
+  var canvas = document.getElementById('screen');
+  var volume = document.getElementById('volume_display');
+  flashycubes.init(canvas, volume);"
+>
   <div class="container">
   <div class="contents">
     <ul>
@@ -21,6 +25,12 @@
       <li><a target="_blank" href="https://gopher.floodgap.com/gopher/gw?a=gopher%3A%2F%2Fsdf.org%3A70%2F1%2Fusers%2Floli"><span>// </span>gopher();</a></li>
       <li><a target="_blank" href="https://diaspora.town/people/cd21b8d019510136f3b0001c4202e28a"><span>// </span>diaspora();</a></li>
       <li><a target="_blank" href="https://t.me/lolisamurai"><span>// </span>telegram();</a></li>
+      <li>&nbsp;</li>
+      <li>
+        <span class="uncommented">
+          set_volume(<span id="volume_display">0</span>);
+        </span> // scroll to change
+      </li>
     </ul>
   </div>
   <canvas id="screen">
