@@ -142,8 +142,8 @@ var flashycubes = {};
 
     parallax = [ev.clientX / gfx.canvas.width,
       ev.clientY / gfx.canvas.height]
-        .clamp(0, 1)
-        .multiplyScalar(PARALLAX_AMOUNT);
+      .clamp(0, 1)
+      .multiplyScalar(PARALLAX_AMOUNT);
   }
 
   function updateAmplitude() {
