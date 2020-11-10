@@ -135,7 +135,13 @@ var flashycubes = {};
     setVolume(getVolume() - delta);
   }
 
+  function resume() {
+    audio.resume();
+  }
+
   function mousemove(ev) {
+    audio.resume();
+
     if (ev.clientX == null) {
       return;
     }
@@ -207,7 +213,11 @@ var flashycubes = {};
   }
 
   function drawBackground() {
-    gfx.fillStyle = rgb(low * 30, high * 30, mid * 30);
+    if (audio.state !== 'running') {
+      gfx.fillStyle = rgb(0, 0, 0);
+    } else {
+      gfx.fillStyle = rgb(low * 30, high * 30, mid * 30);
+    }
     gfx.fillRect(0, 0, size[0], size[1]);
   }
 
