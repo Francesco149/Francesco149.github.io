@@ -234,6 +234,7 @@ var flashycubes = {};
 
   function drawCube() {
     gfx.lineWidth = lineWidth;
+    gfx.lineJoin = 'bevel';
     gfx.strokeStyle = rgba(low * 255, mid * 128, high * 128,
       0.8 + amplitude);
     strokeCube(parallax[0], parallax[1], 4, 1 + amplitude,
