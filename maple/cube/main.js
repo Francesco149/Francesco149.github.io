@@ -992,7 +992,7 @@ function createExportWrapper(name, fixedasm) {
 }
 
 var wasmBinaryFile;
-  wasmBinaryFile = 'main.wasm?ts=1661177833';
+  wasmBinaryFile = 'main.wasm?ts=1661247822';
   if (!isDataURI(wasmBinaryFile)) {
     wasmBinaryFile = locateFile(wasmBinaryFile);
   }
