@@ -23,18 +23,20 @@
       <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.21.0/full/pyodide.js"></script>
     <script type='text/javascript'>
+const buildflags ="-sALLOW_MEMORY_GROWTH  -sWASM_BIGINT -s LEGALIZE_JS_FFI=0 -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -O0 -DCUBECALC_DEBUG"
+      console.log("built with flags: " + buildflags);
+
       ;(function () {
           var src = '//cdn.jsdelivr.net/npm/eruda';
           if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
           document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
           document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
       })();
+    </script>
 
-const buildflags ="-sALLOW_MEMORY_GROWTH  -sWASM_BIGINT -s LEGALIZE_JS_FFI=0 -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -O3 -flto"
-      console.log("built with flags: " + buildflags);
-
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.21.0/full/pyodide.js"></script>
+    <script type='text/javascript'>
       var Module = {
         preRun: [],
         postRun: [],
@@ -61,6 +63,6 @@ const buildflags ="-sALLOW_MEMORY_GROWTH  -sWASM_BIGINT -s LEGALIZE_JS_FFI=0 -li
         return Window.devicePixelRatio || 1;
       }
     </script>
-    <script async type="text/javascript" src="main.js?ts=1662816566"></script>
+    <script async type="text/javascript" src="main.js?ts=1662816879"></script>
   </body>
 </html>
