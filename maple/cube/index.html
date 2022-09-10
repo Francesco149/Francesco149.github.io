@@ -25,6 +25,13 @@
 
     <script src="https://cdn.jsdelivr.net/pyodide/v0.21.0/full/pyodide.js"></script>
     <script type='text/javascript'>
+      ;(function () {
+          var src = '//cdn.jsdelivr.net/npm/eruda';
+          if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+          document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+          document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+      })();
+
       var Module = {
         preRun: [],
         postRun: [],
@@ -51,6 +58,6 @@
         return Window.devicePixelRatio || 1;
       }
     </script>
-    <script async type="text/javascript" src="main.js?ts=1662806969"></script>
+    <script async type="text/javascript" src="main.js?ts=1662815146"></script>
   </body>
 </html>
