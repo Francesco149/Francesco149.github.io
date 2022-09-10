@@ -32,6 +32,9 @@
           document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
       })();
 
+const buildflags ="-sALLOW_MEMORY_GROWTH  -sWASM_BIGINT -s LEGALIZE_JS_FFI=0 -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -O3 -flto"
+      console.log("built with flags: " + buildflags);
+
       var Module = {
         preRun: [],
         postRun: [],
@@ -58,6 +61,6 @@
         return Window.devicePixelRatio || 1;
       }
     </script>
-    <script async type="text/javascript" src="main.js?ts=1662815146"></script>
+    <script async type="text/javascript" src="main.js?ts=1662816566"></script>
   </body>
 </html>
