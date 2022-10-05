@@ -33,37 +33,113 @@
     </script>
 
     <script type='text/javascript'>
-const buildflags ="-sALLOW_MEMORY_GROWTH -lidbfs.js -fdiagnostics-color=always -m32 -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -O3 -flto"
+    const buildflags ="-I ./thirdparty/ -DTS=1665004478 compilation-units/monolith.c -o main.js -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 -s WASM=1 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -DCUBECALC_DEBUG -DUTILS_STDIO -O3 -flto"
       console.log("built with flags: " + buildflags);
     </script>
 
     <script type='text/javascript'>
+      // https://stackoverflow.com/a/60730490
+      function getPointerEventNames() {
+        const o = {
+          start: 'pointerdown',
+          move: 'pointermove',
+          end: 'pointerup'
+        };
+
+        if (!window.PointerEvent) {
+          o.start = 'touchstart';
+          o.move = 'touchmove';
+          o.end = 'touchend';
+        } else if (!!window.MSPointerEvent) {
+          o.start = 'MSPointerDown';
+          o.move = 'MSPointerMove';
+          o.end = 'MSPointerUp';
+        }
+        return o;
+      }
+      const pointerEventNames = getPointerEventNames();
       var Module = {
         preRun: [],
         postRun: [],
         print: function(s) { console.log('stdout: ' + s) },
         printErr: function(s) { console.log('stderr: ' + s) },
-        canvas: (function() {
-          var canvas = document.getElementById('canvas');
-          // As a default initial behavior, pop up an alert when webgl context is lost. To make your
-          // application robust, you may want to override this behavior before shipping!
-          // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
-          canvas.addEventListener("webglcontextlost", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
-          return canvas;
-        })(),
         setStatus: function(text) {},
         totalDependencies: 0,
         monitorRunDependencies: function(left) {}
       };
-      window.addEventListener('resize', js_resizeCanvas, false);
+      function resetTouchState() {
+        Module.prevX = Module.prevY = Module.prevMaxDist = Module.clickButton = undefined;
+        Module.deltaX = Module.deltaY = Module.deltaDist = 0;
+      }
+      Module.canvas = (function() {
+        var canvas = document.getElementById('canvas');
+        // As a default initial behavior, pop up an alert when webgl context is lost. To make your
+        // application robust, you may want to override this behavior before shipping!
+        // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+        canvas.addEventListener("webglcontextlost",
+          function(e) {
+            alert('WebGL context lost. You will need to reload the page.');
+            e.preventDefault();
+          }, false);
+        canvas.addEventListener(pointerEventNames.start,
+          function(e) {
+            resetTouchState();
+            if (!Module.deltaX && !Module.deltaY && !Module.deltaDist) {
+              const { pageX, pageY } = e;
+              Module.X = Module.prevX = pageX;
+              Module.Y = Module.prevY = pageY;
+              Module.deltaX = Module.deltaY = 0;
+              Module.clickButton = e.buttons || 1;
+              //console.log("click", pageX, pageY);
+            }
+            e.preventDefault();
+          } , false);
+        canvas.addEventListener(pointerEventNames.end,
+          function(e) {
+            resetTouchState();
+            e.preventDefault();
+          } , false);
+        canvas.addEventListener(pointerEventNames.move,
+          function(e) {
+            const touches = e.touches || [e];
+            if (touches.length > 1) {
+              var maxDist = 0;
+              for (const x of touches) {
+                const {pageX, pageY} = x;
+                for (const other of touches) {
+                  const dx = other.pageX - pageX;
+                  const dy = other.pageY - pageY;
+                  const dist = Math.sqrt(dx * dx + dy * dy);
+                  maxDist = Math.max(maxDist, dist);
+                }
+              }
+              if (Module.prevMaxDist !== undefined) {
+                Module.deltaDist = maxDist - Module.prevMaxDist;
+                //console.log("pinch", Module.deltaDist);
+              }
+              Module.prevMaxDist = maxDist;
+            } else {
+              const {pageX, pageY} = touches[0];
+              if (Module.prevX !== undefined && Module.prevY !== undefined) {
+                Module.X = pageX;
+                Module.Y = pageY;
+                Module.deltaX = pageX - Module.prevX;
+                Module.deltaY = pageY - Module.prevY;
+                //console.log("move", Module.deltaX, Module.deltaY);
+              }
+              Module.prevX = pageX;
+              Module.prevY = pageY;
+            }
+            e.preventDefault();
+          }, false);
+        return canvas;
+      })();
       function js_resizeCanvas() {
-            document.getElementById('canvas').width = window.innerWidth;
-            document.getElementById('canvas').height = window.innerHeight;
+        document.getElementById('canvas').width = window.innerWidth;
+        document.getElementById('canvas').height = window.innerHeight;
       }
-      function js_deviceScaleFactor() {
-        return Window.devicePixelRatio || 1;
-      }
+      window.addEventListener('resize', js_resizeCanvas, false);
     </script>
-    <script async type="text/javascript" src="main.js?ts=1664878900"></script>
+    <script async type="text/javascript" src="main.js?ts=1665004478"></script>
   </body>
 </html>
