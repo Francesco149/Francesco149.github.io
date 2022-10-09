@@ -32,8 +32,9 @@
       })();
     </script>
 
+    <script src="coi-serviceworker.js"></script>
     <script type='text/javascript'>
-    const buildflags ="-I ./thirdparty/ -DTS=1665039957 compilation-units/monolith.c -o main.js -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 -s WASM=1 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
+    const buildflags ="-I ./thirdparty/ -DTS=1665320687 compilation-units/monolith.c -o main.js -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 -s WASM=1 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -sWASM_WORKERS -sPTHREAD_POOL_SIZE=navigator.hardwareConcurrency+1 -fdiagnostics-color=always -lGL -pthread -O3 -flto"
       console.log("built with flags: " + buildflags);
     </script>
 
@@ -140,6 +141,6 @@
       }
       window.addEventListener('resize', js_resizeCanvas, false);
     </script>
-    <script async type="text/javascript" src="main.js?ts=1665039957"></script>
+    <script async type="text/javascript" src="main.js?ts=1665320687"></script>
   </body>
 </html>
