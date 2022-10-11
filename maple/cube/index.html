@@ -34,14 +34,14 @@
 
     <script src="coi-serviceworker.js"></script>
     <script type='text/javascript'>
-      const buildflags ="-I ./thirdparty/ -DTS=1665486855 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
+      var buildflags ="-I ./thirdparty/ -DTS=1665486855 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
       console.log("built with flags: " + buildflags);
     </script>
 
     <script type='text/javascript'>
       // https://stackoverflow.com/a/60730490
       function getPointerEventNames() {
-        const o = {
+        var o = {
           start: 'pointerdown',
           move: 'pointermove',
           end: 'pointerup'
@@ -58,7 +58,7 @@
         }
         return o;
       }
-      const pointerEventNames = getPointerEventNames();
+      var pointerEventNames = getPointerEventNames();
       var Module = {
         preRun: [],
         postRun: [],
@@ -86,8 +86,8 @@
           function(e) {
             resetTouchState();
             if (!Module.deltaX && !Module.deltaY && !Module.deltaDist) {
-              const pageX = e.pageX
-              const pageY = e.pageY;
+              var pageX = e.pageX
+              var pageY = e.pageY;
               Module.X = Module.prevX = pageX;
               Module.Y = Module.prevY = pageY;
               Module.deltaX = Module.deltaY = 0;
@@ -103,16 +103,16 @@
           } , false);
         canvas.addEventListener(pointerEventNames.move,
           function(e) {
-            const touches = e.touches || [e];
+            var touches = e.touches || [e];
             if (touches.length > 1) {
               var maxDist = 0;
               for (var x in touches) {
-                const pageX = x.pageX;
-                const pageY = x.pageY;
-                for (const other of touches) {
-                  const dx = other.pageX - pageX;
-                  const dy = other.pageY - pageY;
-                  const dist = Math.sqrt(dx * dx + dy * dy);
+                var pageX = x.pageX;
+                var pageY = x.pageY;
+                for (var other of touches) {
+                  var dx = other.pageX - pageX;
+                  var dy = other.pageY - pageY;
+                  var dist = Math.sqrt(dx * dx + dy * dy);
                   maxDist = Math.max(maxDist, dist);
                 }
               }
@@ -122,8 +122,8 @@
               }
               Module.prevMaxDist = maxDist;
             } else {
-              const pageX = touches[0].pageX;
-              const pageY = touches[0].pageY;
+              var pageX = touches[0].pageX;
+              var pageY = touches[0].pageY;
               if (Module.prevX !== undefined && Module.prevY !== undefined) {
                 Module.X = pageX;
                 Module.Y = pageY;
@@ -151,7 +151,7 @@
           multithread = false;
           console.log("failed shared array buf test");
         }
-        const uint8 = new Uint8Array(sab);
+        var uint8 = new Uint8Array(sab);
         uint8[0] = 5;
         Atomics.add(uint8, 0, 2);
         if (Atomics.load(uint8, 0) != 7) {
@@ -168,11 +168,11 @@
       }
 
       // https://stackoverflow.com/a/47880734
-      const wasmSupport = (() => {
+      var wasmSupport = (() => {
         try {
           if (typeof WebAssembly === "object"
             && typeof WebAssembly.instantiate === "function") {
-            const module = new WebAssembly.Module(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00));
+            var module = new WebAssembly.Module(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00));
             if (module instanceof WebAssembly.Module)
               return new WebAssembly.Instance(module) instanceof WebAssembly.Instance;
           }
@@ -185,8 +185,8 @@
         console.log("falling back to pure js version");
       }
 
-      const ts="1665486855";
-      const src = "main" +
+      var ts="1665486855";
+      var src = "main" +
         (wasmSupport ? (multithread ? "" : "-singlethread") : "-nowasm") +
         ".js?ts=" + ts.toString();
       document.write('<scr' + 'ipt async type="text/javascript" src="' + src + '"></scr' + 'ipt>');
