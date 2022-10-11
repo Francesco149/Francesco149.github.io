@@ -109,7 +109,7 @@
               for (var x in touches) {
                 var pageX = x.pageX;
                 var pageY = x.pageY;
-                for (var other of touches) {
+                for (var other in touches) {
                   var dx = other.pageX - pageX;
                   var dy = other.pageY - pageY;
                   var dist = Math.sqrt(dx * dx + dy * dy);
