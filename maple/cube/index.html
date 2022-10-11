@@ -34,7 +34,7 @@
 
     <script src="coi-serviceworker.js"></script>
     <script type='text/javascript'>
-    const buildflags ="-I ./thirdparty/ -DTS=1665320687 compilation-units/monolith.c -o main.js -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 -s WASM=1 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -sWASM_WORKERS -sPTHREAD_POOL_SIZE=navigator.hardwareConcurrency+1 -fdiagnostics-color=always -lGL -pthread -O3 -flto"
+    const buildflags ="-I ./thirdparty/ -DTS=1665479389 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 -s WASM=1 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
       console.log("built with flags: " + buildflags);
     </script>
 
@@ -140,7 +140,33 @@
         document.getElementById('canvas').height = window.innerHeight;
       }
       window.addEventListener('resize', js_resizeCanvas, false);
+
+      var multithread = true;
+      try {
+        var sab = new SharedArrayBuffer(16);
+        if (sab === undefined) {
+          multithread = false;
+          console.log("failed shared array buf test");
+        }
+        const uint8 = new Uint8Array(sab);
+        uint8[0] = 5;
+        Atomics.add(uint8, 0, 2);
+        if (Atomics.load(uint8, 0) != 7) {
+          multithread = false;
+          console.log("failed atomics test");
+        }
+      } catch (e) {
+        console.log(e);
+        multithread = false;
+      }
+
+      if (!multithread) {
+        console.log("falling back to single thread");
+      }
+
+    const ts="1665479389";
+      const src = "main" + (multithread ? "" : "-singlethread") + ".js?ts=" + ts.toString();
+      document.write('<scr' + 'ipt async type="text/javascript" src="' + src + '"></scr' + 'ipt>');
     </script>
-    <script async type="text/javascript" src="main.js?ts=1665320687"></script>
   </body>
 </html>
