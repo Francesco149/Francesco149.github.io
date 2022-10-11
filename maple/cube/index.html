@@ -34,8 +34,18 @@
 
     <script src="coi-serviceworker.js"></script>
     <script type='text/javascript'>
-      const buildflags ="-I ./thirdparty/ -DTS=1665487588 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
+      const buildflags ="-I ./thirdparty/ -DTS=1665487994 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
       console.log("built with flags: " + buildflags);
+
+      // needed to make it run on IE11
+      if (!String.prototype.startsWith) {
+        Object.defineProperty(String.prototype, 'startsWith', {
+          value: function(search, rawPos) {
+            var pos = rawPos > 0 ? rawPos|0 : 0;
+            return this.substring(pos, pos + search.length) === search;
+          }
+        });
+      }
     </script>
 
     <script type='text/javascript'>
