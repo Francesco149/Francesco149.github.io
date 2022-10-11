@@ -34,7 +34,7 @@
 
     <script src="coi-serviceworker.js"></script>
     <script type='text/javascript'>
-      const buildflags ="-I ./thirdparty/ -DTS=1665486409 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
+      const buildflags ="-I ./thirdparty/ -DTS=1665486855 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
       console.log("built with flags: " + buildflags);
     </script>
 
@@ -106,7 +106,7 @@
             const touches = e.touches || [e];
             if (touches.length > 1) {
               var maxDist = 0;
-              for (const x of touches) {
+              for (var x in touches) {
                 const pageX = x.pageX;
                 const pageY = x.pageY;
                 for (const other of touches) {
@@ -185,7 +185,7 @@
         console.log("falling back to pure js version");
       }
 
-      const ts="1665486409";
+      const ts="1665486855";
       const src = "main" +
         (wasmSupport ? (multithread ? "" : "-singlethread") : "-nowasm") +
         ".js?ts=" + ts.toString();
