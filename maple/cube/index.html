@@ -34,7 +34,7 @@
 
     <script src="coi-serviceworker.js"></script>
     <script type='text/javascript'>
-      const buildflags ="-I ./thirdparty/ -DTS=1665493237 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
+      const buildflags ="-I ./thirdparty/ -DTS=1665493395 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
       console.log("built with flags: " + buildflags);
 
       // polyfill for old browsers
@@ -174,7 +174,7 @@
               for (var i = 0; i < touches.length; ++i) {
                 var pageX = touches[i].pageX;
                 var pageY = touches[i].pageY;
-                for (var j = 0; j < touches.length; ++j) {
+                for (var j = i; j < touches.length; ++j) {
                   var dx = touches[j].pageX - pageX;
                   var dy = touches[j].pageY - pageY;
                   var dist = Math.sqrt(dx * dx + dy * dy);
