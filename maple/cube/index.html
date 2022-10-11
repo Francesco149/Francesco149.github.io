@@ -34,7 +34,7 @@
 
     <script src="coi-serviceworker.js"></script>
     <script type='text/javascript'>
-      const buildflags ="-I ./thirdparty/ -DTS=1665484113 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
+      const buildflags ="-I ./thirdparty/ -DTS=1665486409 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
       console.log("built with flags: " + buildflags);
     </script>
 
@@ -86,7 +86,8 @@
           function(e) {
             resetTouchState();
             if (!Module.deltaX && !Module.deltaY && !Module.deltaDist) {
-              const { pageX, pageY } = e;
+              const pageX = e.pageX
+              const pageY = e.pageY;
               Module.X = Module.prevX = pageX;
               Module.Y = Module.prevY = pageY;
               Module.deltaX = Module.deltaY = 0;
@@ -106,7 +107,8 @@
             if (touches.length > 1) {
               var maxDist = 0;
               for (const x of touches) {
-                const {pageX, pageY} = x;
+                const pageX = x.pageX;
+                const pageY = x.pageY;
                 for (const other of touches) {
                   const dx = other.pageX - pageX;
                   const dy = other.pageY - pageY;
@@ -120,7 +122,8 @@
               }
               Module.prevMaxDist = maxDist;
             } else {
-              const {pageX, pageY} = touches[0];
+              const pageX = touches[0].pageX;
+              const pageY = touches[0].pageY;
               if (Module.prevX !== undefined && Module.prevY !== undefined) {
                 Module.X = pageX;
                 Module.Y = pageY;
@@ -182,7 +185,7 @@
         console.log("falling back to pure js version");
       }
 
-      const ts="1665484113";
+      const ts="1665486409";
       const src = "main" +
         (wasmSupport ? (multithread ? "" : "-singlethread") : "-nowasm") +
         ".js?ts=" + ts.toString();
