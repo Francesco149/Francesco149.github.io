@@ -36,9 +36,6 @@
 
     <script src="coi-serviceworker.js"></script>
     <script type='text/javascript'>
-      const buildflags ="-I ./thirdparty/ -DTS=1665676746 compilation-units/monolith.c -s USE_WEBGL2=1 -s USE_GLFW=3 -s FULL_ES2 --cache ./emcc-cache -sALLOW_MEMORY_GROWTH -lidbfs.js -sEXPORTED_FUNCTIONS=_main,_storageAfterInit,_storageAfterCommit -fdiagnostics-color=always -lGL -O3 -flto"
-      console.log("built with flags: " + buildflags);
-
       // polyfill for old browsers
       // ... though a browser this old most likely doesn't support webgl2
       // (tested ie11 and didn't work due to lack of webgl2 support)
@@ -254,10 +251,7 @@
         console.log("falling back to pure js version");
       }
 
-      var ts="1665486855";
-      var src = "main" +
-        (wasmSupport ? (multithread ? "" : "-singlethread") : "-nowasm") +
-        ".js?ts=" + ts.toString();
+      var src = "main" + (wasmSupport ? (multithread ? "" : "-singlethread") : "-nowasm") + ".js";
       document.write('<scr' + 'ipt async type="text/javascript" src="' + src + '"></scr' + 'ipt>');
     </script>
   </body>
