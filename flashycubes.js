@@ -80,7 +80,7 @@ var flashycubes = {};
     return INITIAL_VOLUME;
   }
 
-  function initAudio(volume) {
+  function initAudio(volume, asVisualizer) {
     volumeDisplay = volume;
 
     if (!hasAudio()) {
@@ -93,7 +93,6 @@ var flashycubes = {};
 
     audio = new AudioContext();
     gainNode = audio.createGain();
-    gainNode.connect(audio.destination);
     initialGainNode = audio.createGain();
     initialGainNode.connect(gainNode);
     analyser = audio.createAnalyser();
@@ -105,9 +104,19 @@ var flashycubes = {};
     soundBuffer = new Uint8Array(analyser.fftSize);
     frequencyBuffer = new Uint8Array(analyser.frequencyBinCount);
 
-    loadSound(MUSIC_FILE, function(buffer) {
-      playSound(buffer, 0, MUSIC_OFFSET);
-    });
+    if (asVisualizer) {
+      navigator.mediaDevices.getUserMedia({video: false, audio: true}).then((stream) => {
+        var source = audio.createMediaStreamSource(stream);
+        source.connect(analyser);
+      }).catch((err) => {
+        console.error(`failed to get user audio stream: ${err}`)
+      });
+    } else {
+      gainNode.connect(audio.destination); // when visualizing from file we actually play the audio
+      loadSound(MUSIC_FILE, function(buffer) {
+        playSound(buffer, 0, MUSIC_OFFSET);
+      });
+    }
   }
 
   function initStars() {
@@ -116,9 +125,9 @@ var flashycubes = {};
     }
   }
 
-  function init(canvas, volume) {
+  function init(canvas, volume, asVisualizer) {
     initGraphics(canvas);
-    initAudio(volume);
+    initAudio(volume, asVisualizer);
     initStars();
   }
 
@@ -212,12 +221,12 @@ var flashycubes = {};
     rotation = addAngle(rotation, amplitude * Math.PI * deltaTime);
   }
 
+  function spectrumValid() {
+    return audio.state === 'running' && !isNaN(low) && !isNaN(mid) && !isNaN(high);
+  }
+
   function drawBackground() {
-    if (audio.state !== 'running') {
-      gfx.fillStyle = rgb(0, 0, 0);
-    } else {
-      gfx.fillStyle = rgb(low * 30, high * 30, mid * 30);
-    }
+    gfx.fillStyle = spectrumValid() ? rgb(low * 30, high * 30, mid * 30) : rgb(0, 0, 0);
     gfx.fillRect(0, 0, size[0], size[1]);
   }
 
@@ -235,9 +244,10 @@ var flashycubes = {};
   function drawCube() {
     gfx.lineWidth = lineWidth;
     gfx.lineJoin = 'bevel';
-    gfx.strokeStyle = rgba(low * 255, mid * 128, high * 128,
-      0.8 + amplitude);
-    strokeCube(parallax[0], parallax[1], 4, 1 + amplitude,
+    gfx.strokeStyle = spectrumValid() ?
+      rgba(low * 255, mid * 128, high * 128, 0.8 + amplitude)
+    : rgba(NOAUDIO_LOW * 255, NOAUDIO_MID * 128, NOAUDIO_HIGH * 128, 0.8 + NOAUDIO_AMPLITUDE);
+    strokeCube(parallax[0], parallax[1], 4, 1 + (spectrumValid() ? amplitude : NOAUDIO_AMPLITUDE),
       rotation, rotation * 0.75);
   }
 
@@ -259,6 +269,7 @@ var flashycubes = {};
   }
 
   flashycubes.init = init;
+  flashycubes.resume = resume;
 
   // --------------------------------------------------------------------
 

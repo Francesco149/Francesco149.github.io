@@ -15,12 +15,22 @@
 <body onload="
   var canvas = document.getElementById('screen');
   var volume = document.getElementById('volume_display');
-  flashycubes.init(canvas, volume);"
->
+  var visualize = /visualize=true/.test(window.location);
+  flashycubes.init(canvas, volume, visualize);
+  if (visualize) {
+    document.getElementById('contents-div').style.display = 'none';
+  }
+">
   <div class="container">
-  <div class="contents">
+  <div class="contents" id="contents-div">
     <ul>
       <li><a target="_blank" onclick="flashycubes.resume();"><span>// </span>resume(); // click here if your stupid browser stops autoplay</a></li>
+      <li><a target="_blank" onclick="
+        var canvas = document.getElementById('screen');
+        var volume = document.getElementById('volume_display');
+        flashycubes.init(canvas, volume, true);
+        document.getElementById('contents-div').style.display = 'none';
+      "><span>// </span>visualizer(); // visualize your mic or your own audio source. reload to undo</a></li>
       <li><a target="_blank" href="https://creativecommons.org/licenses/by/4.0/"><span>// </span>music_license("TeknoAXE - To the Next Destination");</a></li>
       <li><a target="_blank" href="http://teknoaxe.com/Home.php"><span>// </span>artist_website("TeknoAXE");</a></li>
       <li>&nbsp;</li>
