@@ -6,6 +6,7 @@
     <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <title>MapleStory Average Cubing Cost Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
     <style>
       body {
         font-family: arial;
@@ -17,6 +18,7 @@
       div.emscripten_border { border: none; }
       /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
       canvas.emscripten { border: 0px none; background-color: black; }
+      .github-fork-ribbon:before { background-color: #663333; }
     </style>
   </head>
   <body>
@@ -254,5 +256,6 @@
       var src = "main" + (wasmSupport ? (multithread ? "" : "-singlethread") : "-nowasm") + ".js";
       document.write('<scr' + 'ipt async type="text/javascript" src="' + src + '"></scr' + 'ipt>');
     </script>
+    <a class="github-fork-ribbon left-top fixed" href="https://github.com/Francesco149/cubecalc-ui" data-ribbon="Source Code" title="Source Code">Source Code</a>
   </body>
 </html>
