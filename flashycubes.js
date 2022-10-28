@@ -105,7 +105,20 @@ var flashycubes = {};
     frequencyBuffer = new Uint8Array(analyser.frequencyBinCount);
 
     if (asVisualizer) {
-      navigator.mediaDevices.getUserMedia({video: false, audio: true}).then((stream) => {
+      var audioParams = {
+        deviceId: 'default',
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false,
+        googEchoCancellation: false,
+        googEchoCancellation2: false,
+        googAutoGainControl: false,
+        googAutoGainControl2: false,
+        googNoiseSuppression: false,
+        googNoiseSuppression2: false,
+        googDucking: false,
+      };
+      navigator.mediaDevices.getUserMedia({video: false, audio: audioParams}).then((stream) => {
         var source = audio.createMediaStreamSource(stream);
         source.connect(analyser);
       }).catch((err) => {
