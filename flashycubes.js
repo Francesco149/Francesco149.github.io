@@ -49,7 +49,7 @@ var flashycubes = {};
   var stars = [];
   var rotation = 0;
   var parallax = [0, 0];
-  var lineWidth = 2;
+  var lineWidth = 5;
 
   function initGraphics(canvas) {
     gfx = canvas.getContext('2d');
