@@ -254,6 +254,25 @@ var flashycubes = {};
   function draw() {
     drawBackground();
     drawStars();
+
+    var x = 0;
+    gfx.lineWidth = 5;
+    gfx.strokeStyle = rgba(low * 128, mid * 64, high * 64, 0.1 + amplitude / 2)
+    gfx.beginPath();
+    for (var i = 0; i < soundBuffer.length; ++i) {
+      var v = soundBuffer[i] / 128.0 - 1;
+      var y = gfx.canvas.height / 2 + v * gfx.canvas.height / 8;
+      if (i == 0) {
+        gfx.moveTo(x, y);
+      } else {
+        gfx.lineTo(x, y);
+      }
+      x += gfx.canvas.width / soundBuffer.length;
+    }
+
+    gfx.lineTo(gfx.canvas.width, gfx.canvas.height / 4);
+    gfx.stroke();
+
     drawCube();
   }
 
