@@ -91,6 +91,7 @@ var flashycubes = {};
       return;
     }
 
+    if (audio) audio.close();
     audio = new AudioContext();
     gainNode = audio.createGain();
     initialGainNode = audio.createGain();
