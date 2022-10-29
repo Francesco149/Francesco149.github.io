@@ -49,7 +49,7 @@ var flashycubes = {};
   var stars = [];
   var rotation = 0;
   var parallax = [0, 0];
-  var lineWidth = 5;
+  var lineWidth = 2;
 
   function initGraphics(canvas) {
     gfx = canvas.getContext('2d');
@@ -150,7 +150,7 @@ var flashycubes = {};
     gfx.canvas.height = window.innerHeight;
     size = [gfx.canvas.width, gfx.canvas.height];
     aspect = gfx.canvas.height / gfx.canvas.width;
-    lineWidth = Math.floor(Math.max(1, size[0] * 0.002));
+    lineWidth = Math.floor(Math.max(1, size[0] * 0.004));
   }
 
   function wheel(ev) {
