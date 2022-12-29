@@ -50,6 +50,7 @@ var flashycubes = {};
   var rotation = 0;
   var parallax = [0, 0];
   var lineWidth = 2;
+  var padoru = null;
 
   function initGraphics(canvas) {
     gfx = canvas.getContext('2d');
@@ -139,10 +140,11 @@ var flashycubes = {};
     }
   }
 
-  function init(canvas, volume, asVisualizer) {
+  function init(canvas, volume, asVisualizer, padoru_) {
     initGraphics(canvas);
     initAudio(volume, asVisualizer);
     initStars();
+    padoru = padoru_;
   }
 
   function resize() {
@@ -233,6 +235,11 @@ var flashycubes = {};
     updateStars();
 
     rotation = addAngle(rotation, amplitude * Math.PI * deltaTime);
+    padoru.playbackRate = 0;
+    var v = Math.log(amplitude * 200);
+    if (v > 0) {
+      padoru.playbackRate += Math.min(v, 8) / 4.0;
+    }
   }
 
   function spectrumValid() {
@@ -267,6 +274,21 @@ var flashycubes = {};
 
   function draw() {
     drawBackground();
+
+    if (padoru !== null) {
+      // TODO: get img height
+      var pa = Math.min(0.1 + amplitude * 0.9, 1) * 0.7;
+      var s = gfx.canvas.height / 381.0 * (1 + pa) * 0.7;
+      var ix = gfx.canvas.width / 2.0  - 375.0 * s / 2;
+      var iy = gfx.canvas.height / 2.0 - 381.0 * s / 2;
+      gfx.scale(s, s);
+      var a = gfx.globalAlpha;
+      gfx.globalAlpha = pa;
+      gfx.drawImage(padoru, ix / s, iy / s);
+      gfx.globalAlpha = a;
+      gfx.setTransform(1, 0, 0, 1, 0, 0);
+    }
+
     drawStars();
 
     var x = 0;
