@@ -240,6 +240,9 @@ var flashycubes = {};
     if (v > 0) {
       padoru.playbackRate += Math.min(v, 8) / 4.0;
     }
+    if (padoru.paused) {
+      padoru.play();
+    }
   }
 
   function spectrumValid() {
