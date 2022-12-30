@@ -235,7 +235,7 @@ var flashycubes = {};
     updateStars();
 
     rotation = addAngle(rotation, amplitude * Math.PI * deltaTime);
-    padoru.playbackRate = 0;
+    padoru.playbackRate = 0.1;
     var v = Math.log(amplitude * 200);
     if (v > 0) {
       padoru.playbackRate += Math.min(v, 8) / 4.0;
