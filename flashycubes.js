@@ -50,7 +50,7 @@ var flashycubes = {};
   var rotation = 0;
   var parallax = [0, 0];
   var lineWidth = 2;
-  var padoru = null;
+  var video = null;
 
   function initGraphics(canvas) {
     gfx = canvas.getContext('2d');
@@ -140,11 +140,11 @@ var flashycubes = {};
     }
   }
 
-  function init(canvas, volume, asVisualizer, padoru_) {
+  function init(canvas, volume, asVisualizer, video_) {
     initGraphics(canvas);
     initAudio(volume, asVisualizer);
     initStars();
-    padoru = padoru_;
+    video = video_;
   }
 
   function resize() {
@@ -235,13 +235,13 @@ var flashycubes = {};
     updateStars();
 
     rotation = addAngle(rotation, amplitude * Math.PI * deltaTime);
-    padoru.playbackRate = 0.1;
+    video.playbackRate = 0.1;
     var v = Math.log(amplitude * 200);
     if (v > 0) {
-      padoru.playbackRate += Math.min(v, 8) / 4.0;
+      video.playbackRate += Math.min(v, 8) / 4.0;
     }
-    if (padoru.paused) {
-      padoru.play();
+    if (video.paused) {
+      video.play();
     }
   }
 
@@ -278,16 +278,15 @@ var flashycubes = {};
   function draw() {
     drawBackground();
 
-    if (padoru !== null) {
-      // TODO: get img height
+    if (video !== null) {
       var pa = Math.min(0.1 + amplitude * 0.9, 1) * 0.7;
-      var s = gfx.canvas.height / 381.0 * (1 + pa) * 0.7;
-      var ix = gfx.canvas.width / 2.0  - 375.0 * s / 2;
-      var iy = gfx.canvas.height / 2.0 - 381.0 * s / 2;
+      var s = gfx.canvas.height / video.videoHeight * (1 + pa) * 0.7;
+      var ix = gfx.canvas.width / 2.0  - video.videoWidth * s / 2;
+      var iy = gfx.canvas.height / 2.0 - video.videoHeight * s / 2;
       gfx.scale(s, s);
       var a = gfx.globalAlpha;
       gfx.globalAlpha = pa;
-      gfx.drawImage(padoru, ix / s, iy / s);
+      gfx.drawImage(video, ix / s, iy / s);
       gfx.globalAlpha = a;
       gfx.setTransform(1, 0, 0, 1, 0, 0);
     }
