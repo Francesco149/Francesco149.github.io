@@ -278,19 +278,6 @@ var flashycubes = {};
   function draw() {
     drawBackground();
 
-    if (video !== null) {
-      var pa = Math.min(0.1 + amplitude * 0.9, 1) * 0.7;
-      var s = gfx.canvas.height / video.videoHeight * (1 + pa) * 0.7;
-      var ix = gfx.canvas.width / 2.0  - video.videoWidth * s / 2;
-      var iy = gfx.canvas.height / 2.0 - video.videoHeight * s / 2;
-      gfx.scale(s, s);
-      var a = gfx.globalAlpha;
-      gfx.globalAlpha = pa;
-      gfx.drawImage(video, ix / s, iy / s);
-      gfx.globalAlpha = a;
-      gfx.setTransform(1, 0, 0, 1, 0, 0);
-    }
-
     drawStars();
 
     var x = 0;
@@ -312,6 +299,19 @@ var flashycubes = {};
     gfx.stroke();
 
     drawCube();
+
+    if (video !== null) {
+      var pa = Math.min(0.1 + amplitude * 0.9, 1) * 0.9;
+      var s = gfx.canvas.height / video.videoHeight * (1 + pa) * 0.7;
+      var ix = gfx.canvas.width / 2.0  - video.videoWidth * s / 2;
+      var iy = gfx.canvas.height / 2.0 - video.videoHeight * s / 2;
+      gfx.scale(s, s);
+      var a = gfx.globalAlpha;
+      gfx.globalAlpha = pa;
+      gfx.drawImage(video, ix / s, iy / s);
+      gfx.globalAlpha = a;
+      gfx.setTransform(1, 0, 0, 1, 0, 0);
+    }
   }
 
   function tick() {
