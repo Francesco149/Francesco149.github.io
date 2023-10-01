@@ -269,8 +269,8 @@ var flashycubes = {};
     gfx.lineWidth = lineWidth;
     gfx.lineJoin = 'bevel';
     gfx.strokeStyle = spectrumValid() ?
-      rgba(low * 255, mid * 128, high * 128, 0.8 + amplitude)
-    : rgba(NOAUDIO_LOW * 255, NOAUDIO_MID * 128, NOAUDIO_HIGH * 128, 0.8 + NOAUDIO_AMPLITUDE);
+      rgba(low * 255, mid * 128, high * 128, 0.4 + amplitude)
+    : rgba(NOAUDIO_LOW * 255, NOAUDIO_MID * 128, NOAUDIO_HIGH * 128, 0.4 + NOAUDIO_AMPLITUDE);
     strokeCube(parallax[0], parallax[1], 4, 1 + (spectrumValid() ? amplitude : NOAUDIO_AMPLITUDE),
       rotation, rotation * 0.75);
   }
@@ -301,7 +301,7 @@ var flashycubes = {};
     drawCube();
 
     if (video !== null) {
-      var pa = Math.min(0.1 + amplitude * 0.9, 1) * 0.9;
+      var pa = Math.min(0.1 + amplitude * 0.9, 1);
       var s = gfx.canvas.height / video.videoHeight * (1 + pa) * 0.7;
       var ix = gfx.canvas.width / 2.0  - video.videoWidth * s / 2;
       var iy = gfx.canvas.height / 2.0 - video.videoHeight * s / 2;
