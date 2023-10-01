@@ -269,8 +269,8 @@ var flashycubes = {};
     gfx.lineWidth = lineWidth;
     gfx.lineJoin = 'bevel';
     gfx.strokeStyle = spectrumValid() ?
-      rgba(low * 255, mid * 128, high * 128, 0.4 + amplitude)
-    : rgba(NOAUDIO_LOW * 255, NOAUDIO_MID * 128, NOAUDIO_HIGH * 128, 0.4 + NOAUDIO_AMPLITUDE);
+      rgba(low * 255, mid * 128, high * 128, 0.1 + amplitude * 0.3)
+    : rgba(NOAUDIO_LOW * 255, NOAUDIO_MID * 128, NOAUDIO_HIGH * 128, 0.1 + NOAUDIO_AMPLITUDE);
     strokeCube(parallax[0], parallax[1], 4, 1 + (spectrumValid() ? amplitude : NOAUDIO_AMPLITUDE),
       rotation, rotation * 0.75);
   }
