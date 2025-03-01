@@ -17,13 +17,17 @@
   var canvas = document.getElementById('screen');
   var volume = document.getElementById('volume_display');
   var visualize = /visualize=true/.test(window.location);
+  var animation = (new URLSearchParams(window.location.search)).get('animation');
   var video = document.getElementById('video');
+  if (animation) {
+    video.src = animation;
+  }
   flashycubes.init(canvas, volume, visualize, video);
   if (visualize) {
     document.getElementById('contents-div').style.display = 'none';
   }
 ">
-  <video autoplay id="video" src="hatkid.webm" style="display: none;"></video>
+  <video autoplay id="video" src="kirby.webm" style="display: none;"></video>
   <div class="container">
   <div class="contents" id="contents-div">
     <ul>
