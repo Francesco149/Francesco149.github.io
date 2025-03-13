@@ -87,22 +87,22 @@ function getPrice(args, star) {
     }
     base = Math.round(base) + 10;
     base *= 100;
+    // TODO: these are approximations
+    if (star == 17) {
+      base *= 1.33;
+    } else if (star == 18) {
+      base *= 2.85;
+    } else if (star == 19) {
+      base *= 4.44;
+    } else if (star == 21) {
+      base *= 1.6;
+    }
     var multiplier = 1;
     if (star < 17) {
         multiplier = args.mvpDiscount;
     }
     if ((args.event & events.discount) > 0) {
         multiplier *= 0.7;
-    }
-    // TODO: these are approximations
-    if (star == 17) {
-      multiplier *= 1.33;
-    } else if (star == 18) {
-      multiplier *= 2.85;
-    } else if (star == 19) {
-      multiplier *= 4.44;
-    } else if (star == 21) {
-      multiplier *= 1.6;
     }
     if (args.safeguard[star] && data[star].safeguard && canDestroy(args, star)) {
         multiplier += 2;
