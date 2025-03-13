@@ -1,0 +1,39 @@
+x = average price to next star
+y = average destroys to next star
+p = success chance
+c = cost
+f = failure cost (initial cost + cost to get back)
+d = destroy cost (average destroys to get back after failure)
+
+x = pc + (1 - p)(f + x)
+x = pc + f + x - pf - px
+px = pc + f(1 - p)
+x = c + f * (1 - p)/p
+
+y = p*0 + (1 - p)(d + y)
+y = d + y - pd - py
+py = d(1 - p)
+y = d * (1 - p)/p
+
+---
+
+x = chance of no destruction to next star
+p = success chance
+d = destroy chance to get back after failure
+
+x = p + (1 - p)(1 - d)x
+x - (1 - p - d + pd)x = p
+x = p / (1 - (1 - p - d - pd))
+x = p / (p + d - pd)
+
+---
+
+p = percentile
+x = no destroy chance
+y = no destroy from 12 chance
+d = number of destroys
+
+p = 1 - ((1 - x) * (1 - y)^d)
+(1 - x) * (1 - y)^d = 1 - p
+(1 - y)^d = (1 - p) / (1 - x)
+d = log(base = 1 - y, value = (1 - p) / (1 - x))
