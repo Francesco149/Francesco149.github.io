@@ -7,6 +7,9 @@ const events = {
     extra: 4,
     shining: 3,
     boomchance: 8,
+    boomchanceguarantee: 10,
+    boomchancediscount: 9,
+    boomchanceshining: 11,
 }
 
 const mvp = {
