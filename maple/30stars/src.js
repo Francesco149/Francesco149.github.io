@@ -22,36 +22,36 @@ const mvp = {
 const destroyStar = 12;
 
 const data = {
-    0: { success: 0.95, drop: false },
-    1: { success: 0.9, drop: false },
-    2: { success: 0.85, drop: false },
-    3: { success: 0.85, drop: false },
-    4: { success: 0.8, drop: false },
-    5: { success: 0.75, drop: false },
-    6: { success: 0.7, drop: false },
-    7: { success: 0.65, drop: false },
-    8: { success: 0.6, drop: false },
-    9: { success: 0.55, drop: false },
-    10: { success: 0.5, drop: false },
-    11: { success: 0.45, drop: false },
-    12: { success: 0.4, drop: false },
-    13: { success: 0.35, drop: false },
-    14: { success: 0.3, drop: false },
-    15: { success: 0.3, drop: false, destroy: 0.03, safeguard: true },
-    16: { success: 0.3, drop: false, destroy: 0.03, safeguard: true },
-    17: { success: 0.15, drop: false, destroy: 0.08, safeguard: true },
-    18: { success: 0.15, drop: false, destroy: 0.08, safeguard: false },
-    19: { success: 0.15, drop: false, destroy: 0.01, safeguard: false },
-    20: { success: 0.3, drop: false, destroy: 0.15, safeguard: false },
-    21: { success: 0.15, drop: false, destroy: 0.15, safeguard: false },
-    22: { success: 0.15, drop: false, destroy: 0.2, safeguard: false },
-    23: { success: 0.10, drop: false, destroy: 0.2, safeguard: false },
-    24: { success: 0.10, drop: false, destroy: 0.2, safeguard: false },
-    25: { success: 0.10, drop: false, destroy: 0.2, safeguard: false },
-    26: { success: 0.07, drop: false, destroy: 0.2, safeguard: false },
-    27: { success: 0.05, drop: false, destroy: 0.2, safeguard: false },
-    28: { success: 0.03, drop: false, destroy: 0.2, safeguard: false },
-    29: { success: 0.01, drop: false, destroy: 0.2, safeguard: false },
+    0:  { success: 0.95 },
+    1:  { success: 0.90 },
+    2:  { success: 0.85 },
+    3:  { success: 0.85 },
+    4:  { success: 0.80 },
+    5:  { success: 0.75 },
+    6:  { success: 0.70 },
+    7:  { success: 0.65 },
+    8:  { success: 0.60 },
+    9:  { success: 0.55 },
+    10: { success: 0.50 },
+    11: { success: 0.45 },
+    12: { success: 0.40 },
+    13: { success: 0.35 },
+    14: { success: 0.30 },
+    15: { success: 0.30, destroy: 0.03, safeguard: true },
+    16: { success: 0.30, destroy: 0.03, safeguard: true },
+    17: { success: 0.15, destroy: 0.08, safeguard: true },
+    18: { success: 0.15, destroy: 0.08, safeguard: false },
+    19: { success: 0.15, destroy: 0.10, safeguard: false },
+    20: { success: 0.30, destroy: 0.15, safeguard: false },
+    21: { success: 0.15, destroy: 0.15, safeguard: false },
+    22: { success: 0.15, destroy: 0.20, safeguard: false },
+    23: { success: 0.10, destroy: 0.20, safeguard: false },
+    24: { success: 0.10, destroy: 0.20, safeguard: false },
+    25: { success: 0.10, destroy: 0.20, safeguard: false },
+    26: { success: 0.07, destroy: 0.20, safeguard: false },
+    27: { success: 0.05, destroy: 0.20, safeguard: false },
+    28: { success: 0.03, destroy: 0.20, safeguard: false },
+    29: { success: 0.01, destroy: 0.20, safeguard: false },
 };
 
 // lvl 140:
@@ -85,21 +85,19 @@ function getPrice(args, star) {
         base = Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 11000;
     } else if (star === 14) {
         base = Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 7500;
+    } else if (star == 17) {
+        base = Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 15000;
+    } else if (star == 18) {
+        base = Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 7000;
+    } else if (star == 19) {
+        base = Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 4500;
+    } else if (star == 21) {
+        base = Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 12500;
     } else {
         base = Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 20000;
     }
     base = Math.round(base) + 10;
     base *= 100;
-    // TODO: these are approximations
-    if (star == 17) {
-      base *= 1.33;
-    } else if (star == 18) {
-      base *= 2.85;
-    } else if (star == 19) {
-      base *= 4.44;
-    } else if (star == 21) {
-      base *= 1.6;
-    }
     var multiplier = 1;
     if (star < 17) {
         multiplier = args.mvpDiscount;
@@ -177,7 +175,7 @@ function calculateStep(args, star, results) {
         //scenario: failure is a destroy
         entry = {
             weight: remainingRate * data[star].destroy * (
-              ((args.event & events.boomchance) > 0 && star < 21) ? 0.7 : 1),
+              ((args.event & events.boomchance) > 0 && star <= 21) ? 0.7 : 1),
             price: price,
             destroys: 1,
             noDestroyChance: 0
@@ -190,77 +188,16 @@ function calculateStep(args, star, results) {
         failureTable.push(entry);
         remainingRate -= entry.weight;
     }
-    if (data[star].drop) {
-        //scenario: failure is a drop
-        if (data[star - 1].drop) {
-            //if (we can still drop more)
-            //scenario: success immediately after failing
-            var dropPrice = getPrice(args, star - 1);
-            var dropSuccess = getSuccessRate(args, star - 1);
-            entry = {
-                weight: remainingRate * dropSuccess,
-                price: dropPrice + price,
-                destroys: 0,
-                noDestroyChance: 1
-            };
-            failureTable.push(entry);
-            remainingRate -= entry.weight;
-            if (canDestroy(args, star - 1) && !(args.safeguard[star - 1] && data[star - 1].safeguard)) {
-                //scenario: destroy right after failing
-                entry = {
-                    weight: remainingRate * data[star - 1].destroy,
-                    price: dropPrice + price,
-                    destroys: 1,
-                    noDestroyChance: 0
-                };
-                if (star > destroyStar) {
-                    var range = calculateRange(args, destroyStar, star, results);
-                    entry.price += range.price;
-                    entry.destroys += range.destroys;
-                }
-                failureTable.push(entry);
-                remainingRate -= entry.weight;
-            }
-            //scenario: drop a second time and activate chance time (as of savior this will never get called)
-            if (skipEvent && star - 2 <= 10) {
-                entry = {
-                    weight: remainingRate,
-                    price: getPrice(args, star - 2) + dropPrice + price,
-                    destroys: 0,
-                    noDestroyChance: 1
-                };
-            } else {
-                entry = {
-                    weight: remainingRate,
-                    price: getPrice(args, star - 2) + dropPrice + price + results[star - 1].price,
-                    destroys: results[star - 1].destroys,
-                    noDestroyChance: results[star - 1].noDestroyChance
-                };
-            }
-            failureTable.push(entry);
-            remainingRate -= entry.weight;
-        } else {
-            //if (we can't drop anymore)
-            entry = {
-                weight: remainingRate,
-                price: price + results[star - 1].price,
-                destroys: results[star - 1].destroys,
-                noDestroyChance: results[star - 1].noDestroyChance
-            };
-            failureTable.push(entry);
-            remainingRate -= entry.weight;
-        }
-    } else {
-        //scenario: failure is a keep
-        entry = {
-            weight: remainingRate,
-            price: price,
-            destroys: 0,
-            noDestroyChance: 1
-        };
-        failureTable.push(entry);
-        remainingRate -= entry.weight;
-    }
+
+    entry = {
+        weight: remainingRate,
+        price: price,
+        destroys: 0,
+        noDestroyChance: 1
+    };
+    failureTable.push(entry);
+    remainingRate -= entry.weight;
+
     var failurePrice = 0;
     var failureDestroys = 0;
     var destroyChance = 0;
