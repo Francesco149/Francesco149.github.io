@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<head>
+    <title>Maplestory Star Force Calculator</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="src.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Maplestory Star Force Calculator</h1>
+    </header>
+    <p>WARNING: take this with a grain of salt. I modified the blueshiemagic analytical calc and it seems to align with bruteforce calculators</p>
+    <form onsubmit="calculate(); return false;">
+        <div>
+            <label for="event">Event: </label>
+            <select id="event">
+                <option value="none">None</option>
+                <option value="discount">30% Off</option>
+                <option value="guarantee">5/10/15</option>
+                <option value="extra">+2 for 1-10</option>
+                <option value="shining">Shining</option>
+                <option value="boomchance">30% lower boom below 21</option>
+                <option value="boomchanceguarantee">5/10/15 + 30% lower boom below 21</option>
+                <option value="boomchancediscount">30% Off + 30% lower boom below 21</option>
+                <option value="boomchanceshining">shining + 30% lower boom below 21</option>
+            </select>
+        </div>
+        <div>
+            <label for="mvp">MVP: </label>
+            <select id="mvp">
+                <option value="none">None</option>
+                <option value="silver">Silver</option>
+                <option value="gold">Gold</option>
+                <option value="diamond">Diamond</option>
+            </select>
+        </div>
+        <div>
+            <label for="level">Level: </label>
+            <input type="number" id="level" required value="150" min="0" max="250">
+        </div>
+        <div>
+            <label for="from">Current Stars: </label>
+            <input type="number" id="from" required value="10" min="0" max="29">
+        </div>
+        <div>
+            <label for="to">Target Stars: </label>
+            <input type="number" id="to" required value="22" min="1" max="30">
+        </div>
+        <div>
+            <label for="safeguard">Safeguard: </label>
+            <input type="checkbox" id="safeguard" value="safeguard" onchange="toggleSafeguard()">
+            <details id="safeguard-stars">
+                <summary>Safeguard Stars</summary>
+                <div>
+                    <span class="bold">Note:</span> These options are only used if the Safeguard option above is checked.
+                    <div>
+                        <label for="safeguard-15">15 to 16: </label>
+                        <input type="checkbox" id="safeguard-15" value="safeguard-15" checked disabled>
+                    </div>
+                    <div>
+                        <label for="safeguard-16">16 to 17: </label>
+                        <input type="checkbox" id="safeguard-16" value="safeguard-16" checked disabled>
+                    </div>
+                    <div>
+                        <label for="safeguard-17">17 to 18: </label>
+                        <input type="checkbox" id="safeguard-17" value="safeguard-17" checked disabled>
+                    </div>
+                </div>
+            </details>
+        </div>
+        <div>
+            <label for="catcher">Star Catching: </label>
+            <input type="checkbox" id="catcher" value="catcher" onchange="toggleCatcher()">
+            <details id="catcher-stars">
+                <summary>Star Catcher Stars</summary>
+                <div>
+                    <span class="bold">Note:</span> These options are only used if the Star Catching option above is checked.
+                    <div>
+                        <input type="button" value="Check All" onclick="checkAllCatcher()" disabled>
+                        <input type="button" value="Uncheck All" onclick="uncheckAllCatcher()" disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-0">0 to 5: </label>
+                        <input type="checkbox" id="catcher-0" value="catcher-0" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-5">5 to 10: </label>
+                        <input type="checkbox" id="catcher-5" value="catcher-5" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-10">10 to 15: </label>
+                        <input type="checkbox" id="catcher-10" value="catcher-10" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-15">15 to 16: </label>
+                        <input type="checkbox" id="catcher-15" value="catcher-15" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-16">16 to 17: </label>
+                        <input type="checkbox" id="catcher-16" value="catcher-16" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-17">17 to 18: </label>
+                        <input type="checkbox" id="catcher-17" value="catcher-17" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-18">18 to 19: </label>
+                        <input type="checkbox" id="catcher-18" value="catcher-18" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-19">19 to 20: </label>
+                        <input type="checkbox" id="catcher-19" value="catcher-19" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-20">20 to 21: </label>
+                        <input type="checkbox" id="catcher-20" value="catcher-20" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-21">21 to 22: </label>
+                        <input type="checkbox" id="catcher-21" value="catcher-21" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-22">22 to 23: </label>
+                        <input type="checkbox" id="catcher-22" value="catcher-22" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-23">23 to 24: </label>
+                        <input type="checkbox" id="catcher-23" value="catcher-23" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-24">24 to 25: </label>
+                        <input type="checkbox" id="catcher-24" value="catcher-24" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-25">25 to 26: </label>
+                        <input type="checkbox" id="catcher-25" value="catcher-25" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-26">26 to 27: </label>
+                        <input type="checkbox" id="catcher-26" value="catcher-26" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-27">27 to 28: </label>
+                        <input type="checkbox" id="catcher-27" value="catcher-27" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-28">28 to 29: </label>
+                        <input type="checkbox" id="catcher-28" value="catcher-28" checked disabled>
+                    </div>
+                    <div>
+                        <label for="catcher-29">29 to 30: </label>
+                        <input type="checkbox" id="catcher-29" value="catcher-29" checked disabled>
+                    </div>
+                </div>
+            </details>
+        </div>
+        <input type="submit" value="Calculate">
+    </form>
+    <div id="results" hidden>
+        <div>Average Cost: <span id="cost-average"></span> mesos</div>
+        <div>Average Destroys: <span id="destroy-average"></span></div>
+        <div id="destroy-details" class="section">
+            <div>Chance of Destruction: <span id="destroy-chance"></span>%</div>
+            <ul>
+                <li>25% Percentile: <span id="destroy-percent-25"></span> Destroys</li>
+                <li>50% Percentile: <span id="destroy-percent-50"></span> Destroys (Median)</li>
+                <li>75% Percentile: <span id="destroy-percent-75"></span> Destroys</li>
+                <li>95% Percentile: <span id="destroy-percent-95"></span> Destroys</li>
+            </ul>
+            <canvas id="destroy-graph" width="436" height="280"></canvas>
+        </div>
+    </div>
+    <footer>
+        <div>Made by blushiemagic</div>
+        <div><a href="https://github.com/blushiemagic/Maplestory-Starforce-Calculator">Source Code</a></div>
+    </footer>
+</body>

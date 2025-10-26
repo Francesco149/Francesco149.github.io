@@ -1,0 +1,44 @@
+h1 {
+    font-size: 1.5em;
+}
+
+form {
+    margin-bottom: 1em;
+}
+
+form>div {
+    margin-bottom: 0.5em;
+}
+
+details {
+    margin-top: 0.25em;
+}
+
+details>div {
+    margin-left: 1em;
+}
+
+summary {
+    cursor: default;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.section {
+    margin-top: 1em;
+}
+
+ul {
+    margin: 0;
+}
+
+footer {
+    margin-top: 3em;
+    font-size: 0.8em;
+}
+
+footer>div {
+    margin-bottom: 0.25em;
+}
